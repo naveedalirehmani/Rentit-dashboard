@@ -32,36 +32,36 @@ const routes: IRoute[] = [
     name: "Dashboard", // name that appear in Sidebar
     exact: true,
   },
-  {
-    path: "/forms",
-    icon: "FormsIcon",
-    name: "Forms",
-  },
-  {
-    path: "/cards",
-    icon: "CardsIcon",
-    name: "Cards",
-  },
-  {
-    path: "/charts",
-    icon: "ChartsIcon",
-    name: "Charts",
-  },
-  {
-    path: "/buttons",
-    icon: "ButtonsIcon",
-    name: "Buttons",
-  },
-  {
-    path: "/modals",
-    icon: "ModalsIcon",
-    name: "Modals",
-  },
-  {
-    path: "/tables",
-    icon: "TablesIcon",
-    name: "Tables",
-  },
+  // {
+  //   path: "/forms",
+  //   icon: "FormsIcon",
+  //   name: "Forms",
+  // },
+  // {
+  //   path: "/cards",
+  //   icon: "CardsIcon",
+  //   name: "Cards",
+  // },
+  // {
+  //   path: "/charts",
+  //   icon: "ChartsIcon",
+  //   name: "Charts",
+  // },
+  // {
+  //   path: "/buttons",
+  //   icon: "ButtonsIcon",
+  //   name: "Buttons",
+  // },
+  // {
+  //   path: "/modals",
+  //   icon: "ModalsIcon",
+  //   name: "Modals",
+  // },
+  // {
+  //   path: "/tables",
+  //   icon: "TablesIcon",
+  //   name: "Tables",
+  // },
   {
     icon: "PagesIcon",
     name: "Pages",

@@ -4,8 +4,9 @@ import InfoCard from "components/Cards/InfoCard";
 import PageTitle from "components/Typography/PageTitle";
 import RoundIcon from "components/RoundIcon";
 import Layout from "containers/Layout";
-import response, { ITableData } from "utils/demo/tableData";
+// import response, { ITableData } from "utils/demo/tableData";
 import { ChatIcon, CartIcon, MoneyIcon, PeopleIcon } from "icons";
+import { useRouter } from "next/router";
 
 import {
   TableBody,
@@ -19,30 +20,44 @@ import {
   Badge,
   Pagination,
 } from "@roketid/windmill-react-ui";
+interface ICharacter {
+  id: number;
+  name: string;
+  status: "Alive" | "Dead" | "unknown";
+  species: string;
+  type: string;
+  gender: "Female" | "Male" | "Genderless" | "unknown";
+  origin: {
+    name: string;
+    url: string;
+  };
+  location: {
+    name: string;
+    url: string;
+  };
+  image: string;
+  episode: string[];
+  url: string;
+  created: string;
+}
 
-function Dashboard() {
-  const [page, setPage] = useState(1);
-  const [data, setData] = useState<ITableData[]>([]);
+function Dashboard({ response }: any) {
+  const [data, setData] = useState<ICharacter[]>(response.results);
 
-  // pagination setup
-  const resultsPerPage = 10;
-  const totalResults = response.length;
+  const router = useRouter();
 
-  // pagination change control
   function onPageChange(p: number) {
-    setPage(p);
+    if (p > response.info.pages) {
+      router.push(`/?page=${response.info.pages}`);
+    } else {
+      router.push(`/?page=${p}`);
+    }
   }
 
-  // on page change, load new sliced data
-  // here you would make another server request for new data
-  useEffect(() => {
-    setData(response.slice((page - 1) * resultsPerPage, page * resultsPerPage));
-  }, [page]);
-
   const badgeColor = {
-    "On Rent": "success",
-    Disabled: "danger",
-    "Out of stock": "primary",
+    Alive: "success",
+    Dead: "danger",
+    unknown: "primary",
   };
 
   return (
@@ -109,20 +124,22 @@ function Dashboard() {
                   <div className="flex items-center text-sm">
                     <Avatar
                       className="hidden mr-3 md:block"
-                      src={product.avatar}
+                      src={product.image}
                       size="large"
                       alt="product image image"
                     />
                     <div>
                       <p className="font-semibold">{product.name}</p>
                       <p className="text-xs text-gray-600 dark:text-gray-400">
-                        {product.job}
+                        {product.gender}
                       </p>
                     </div>
                   </div>
                 </TableCell>
                 <TableCell>
-                  <span className="text-sm">$ {product.amount}</span>
+                  <span className="text-sm">
+                    $ {product.id * (Math.floor(Math.random() * 20) + 1)}
+                  </span>
                 </TableCell>
                 <TableCell>
                   <Badge type={badgeColor[product.status]}>
@@ -131,7 +148,7 @@ function Dashboard() {
                 </TableCell>
                 <TableCell>
                   <span className="text-sm">
-                    {new Date(product.date).toLocaleDateString()}
+                    {new Date(product.created).toLocaleDateString()}
                   </span>
                 </TableCell>
               </TableRow>
@@ -140,8 +157,8 @@ function Dashboard() {
         </Table>
         <TableFooter>
           <Pagination
-            totalResults={totalResults}
-            resultsPerPage={resultsPerPage}
+            totalResults={response.info.count}
+            resultsPerPage={20}
             label="Table navigation"
             onChange={onPageChange}
           />
@@ -153,11 +170,13 @@ function Dashboard() {
 
 export default Dashboard;
 
-export async function getServerSideProps() {
-  const response: any = await fetch(
-    "https://rickandmortyapi.com/api/character"
+export async function getServerSideProps({ query }) {
+  console.log(query, "query");
+  const page = query.page || 1;
+  const response = await fetch(
+    `https://rickandmortyapi.com/api/character/?page=${page}`
   );
   const data = await response.json();
 
-  return { props: { response: data.results } };
+  return { props: { response: data } };
 }
