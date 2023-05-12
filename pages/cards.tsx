@@ -3,7 +3,6 @@ import React from "react";
 import { Card, CardBody } from "@roketid/windmill-react-ui";
 import PageTitle from "components/Typography/PageTitle";
 import SectionTitle from "components/Typography/SectionTitle";
-import CTA from "components/CTA";
 import InfoCard from "components/Cards/InfoCard";
 import RoundIcon from "components/RoundIcon";
 import Layout from "containers/Layout";

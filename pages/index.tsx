@@ -42,8 +42,11 @@ interface ICharacter {
 }
 
 function Dashboard({ response }: any) {
-  const [data, setData] = useState<ICharacter[]>(response.results);
+  const [data, setData] = useState<ICharacter[]>();
 
+  useEffect(() => {
+    setData(response.results);
+  }, [response.results]);
   const router = useRouter();
 
   function onPageChange(p: number) {
@@ -107,70 +110,73 @@ function Dashboard({ response }: any) {
         </InfoCard>
       </div>
 
-      <TableContainer>
-        <Table>
-          <TableHeader>
-            <tr>
-              <TableCell>Products</TableCell>
-              <TableCell>Amount</TableCell>
-              <TableCell>Status</TableCell>
-              <TableCell>Date</TableCell>
-            </tr>
-          </TableHeader>
-          <TableBody>
-            {data.map((product, i) => (
-              <TableRow key={i} className="hover:bg-gray-700 cursor-pointer">
-                <TableCell>
-                  <div className="flex items-center text-sm">
-                    <Avatar
-                      className="hidden mr-3 md:block"
-                      src={product.image}
-                      size="large"
-                      alt="product image image"
-                    />
-                    <div>
-                      <p className="font-semibold">{product.name}</p>
-                      <p className="text-xs text-gray-600 dark:text-gray-400">
-                        {product.gender}
-                      </p>
+      {data && (
+        <TableContainer>
+          <Table>
+            <TableHeader>
+              <tr>
+                <TableCell>Products</TableCell>
+                <TableCell>Amount</TableCell>
+                <TableCell>Status</TableCell>
+                <TableCell>Date</TableCell>
+              </tr>
+            </TableHeader>
+            <TableBody>
+              {data.map((product, i) => (
+                <TableRow key={i} className="hover:bg-gray-700 cursor-pointer">
+                  <TableCell>
+                    <div className="flex items-center text-sm">
+                      <Avatar
+                        className="hidden mr-3 md:block"
+                        src={product.image}
+                        size="large"
+                        alt="product image image"
+                      />
+                      <div>
+                        <p className="font-semibold">{product.name}</p>
+                        <p className="text-xs text-gray-600 dark:text-gray-400">
+                          {product.gender}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                </TableCell>
-                <TableCell>
-                  <span className="text-sm">
-                    $ {product.id * (Math.floor(Math.random() * 20) + 1)}
-                  </span>
-                </TableCell>
-                <TableCell>
-                  <Badge type={badgeColor[product.status]}>
-                    {product.status}
-                  </Badge>
-                </TableCell>
-                <TableCell>
-                  <span className="text-sm">
-                    {new Date(product.created).toLocaleDateString()}
-                  </span>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-        <TableFooter>
-          <Pagination
-            totalResults={response.info.count}
-            resultsPerPage={20}
-            label="Table navigation"
-            onChange={onPageChange}
-          />
-        </TableFooter>
-      </TableContainer>
+                  </TableCell>
+                  <TableCell>
+                    <span className="text-sm">
+                      $ {product.id * (Math.floor(Math.random() * 20) + 1)}
+                    </span>
+                  </TableCell>
+                  <TableCell>
+                    {/* @ts-ignore */}
+                    <Badge type={badgeColor[product.status]}>
+                      {product.status}
+                    </Badge>
+                  </TableCell>
+                  <TableCell>
+                    <span className="text-sm">
+                      {new Date(product.created).toLocaleDateString()}
+                    </span>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+          <TableFooter>
+            <Pagination
+              totalResults={response.info.count}
+              resultsPerPage={20}
+              label="Table navigation"
+              onChange={onPageChange}
+            />
+          </TableFooter>
+        </TableContainer>
+      )}
     </Layout>
   );
 }
 
 export default Dashboard;
 
-export async function getServerSideProps({ query }) {
+export async function getServerSideProps({ query }: any) {
   console.log(query, "query");
   const page = query.page || 1;
   const response = await fetch(

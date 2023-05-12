@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 
 import PageTitle from "components/Typography/PageTitle";
 import SectionTitle from "components/Typography/SectionTitle";
-import CTA from "components/CTA";
 import {
   Table,
   TableHeader,
@@ -113,6 +112,7 @@ function Tables() {
                   <span className="text-sm">$ {user.amount}</span>
                 </TableCell>
                 <TableCell>
+                  {/* @ts-ignore */}
                   <Badge type={user.status}>{user.status}</Badge>
                 </TableCell>
                 <TableCell>
@@ -168,6 +168,7 @@ function Tables() {
                   <span className="text-sm">$ {user.amount}</span>
                 </TableCell>
                 <TableCell>
+                  {/* @ts-ignore */}
                   <Badge type={user.status}>{user.status}</Badge>
                 </TableCell>
                 <TableCell>

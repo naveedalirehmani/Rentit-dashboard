@@ -8,7 +8,6 @@ import {
   Button,
 } from "@roketid/windmill-react-ui";
 import PageTitle from "components/Typography/PageTitle";
-import CTA from "components/CTA";
 import Layout from "containers/Layout";
 
 function Modals() {
