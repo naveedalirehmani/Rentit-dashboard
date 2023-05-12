@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-
+import React, { useState, useEffect, useContext } from "react";
+import clsx from "clsx";
 import InfoCard from "components/Cards/InfoCard";
 import PageTitle from "components/Typography/PageTitle";
 import RoundIcon from "components/RoundIcon";
@@ -19,6 +19,7 @@ import {
   Avatar,
   Badge,
   Pagination,
+  WindmillContext,
 } from "@roketid/windmill-react-ui";
 interface ICharacter {
   id: number;
@@ -62,6 +63,13 @@ function Dashboard({ response }: any) {
     Dead: "danger",
     unknown: "primary",
   };
+
+  const { mode } = useContext(WindmillContext);
+  const hoverClass = clsx({
+    "hover:bg-gray-100": mode == "light",
+    "hover:bg-gray-700": mode == "dark",
+    "cursor-pointer": true,
+  });
 
   return (
     <Layout>
@@ -123,7 +131,7 @@ function Dashboard({ response }: any) {
             </TableHeader>
             <TableBody>
               {data.map((product, i) => (
-                <TableRow key={i} className="hover:bg-gray-700 cursor-pointer">
+                <TableRow key={i} className={hoverClass}>
                   <TableCell>
                     <div className="flex items-center text-sm">
                       <Avatar
