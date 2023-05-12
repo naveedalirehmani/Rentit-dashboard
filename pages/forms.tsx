@@ -7,7 +7,6 @@ import {
   Select,
   Textarea,
 } from "@roketid/windmill-react-ui";
-import CTA from "components/CTA";
 import PageTitle from "components/Typography/PageTitle";
 import SectionTitle from "components/Typography/SectionTitle";
 
